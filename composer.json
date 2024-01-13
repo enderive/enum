@@ -1,0 +1,32 @@
+{
+    "name": "enderive/enum",
+    "description": "Enum implementation for php below 8.1",
+    "authors": [
+        {
+            "name": "Matthias Szczesny",
+            "email": "enderive@outlook.com"
+        }
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Enderive\\Enum\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpstan/phpstan": "2.0.x-dev",
+        "phpunit/phpunit": "^10.0@dev",
+        "psalm/phar": "dev-master",
+        "squizlabs/php_codesniffer": "4.0.x-dev"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Enderive\\Enum\\Tests\\": "tests/"
+        }
+    },
+    "minimum-stability": "dev",
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    }
+}
