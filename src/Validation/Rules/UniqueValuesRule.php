@@ -20,7 +20,6 @@ class UniqueValuesRule implements RuleInterface
      */
     public function __invoke(string $classname, array $array): void
     {
-
         if (count($array) === count(array_unique($array))) {
             return;
         }

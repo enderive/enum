@@ -24,8 +24,8 @@ class ValidDataTypeRule implements RuleInterface
             if (!is_int($value) && !is_string($value)) {
                 throw new UnexpectedValueException(
                     sprintf($this->message(), $classname, gettype($value))
-                );    
-            }            
+                );
+            }
         }
     }
 
