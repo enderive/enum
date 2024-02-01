@@ -50,20 +50,16 @@ class EnumTest extends TestCase
 
     public function testCannotCreateDynamicPropertiesOnEnum()
     {
-        $this->expectException(\Error::class);
+        $this->expectException(\ErrorException::class);
 
         StringBackedEnum::MEMBER()->bar = 'baz';
     }
 
     public function testAccessingUndefinedPropertiesTriggersError()
     {
-        set_error_handler(function($errno, $errstr) {
-            $this->assertEquals('Undefined property: $bar', $errstr);
-        });
+        $this->expectException(\ErrorException::class);
 
         StringBackedEnum::MEMBER()->bar;
-
-        restore_error_handler();
     }
 
     public function testListingPureEnumCases()
@@ -84,6 +80,14 @@ class EnumTest extends TestCase
         $this->expectExceptionMessage('not a valid backing value for enum');
 
         IntegerBackedEnum::from('1a');
+    }
+
+    public function testFromMethodThrowsValueErrorOnInvalidDataType()
+    {
+        $this->expectException(ValueError::class);
+        $this->expectExceptionMessage('Value must be either integer or string, "array" given');
+
+        IntegerBackedEnum::from([]);
     }
 
     public function testPureEnumRegularExpression()
