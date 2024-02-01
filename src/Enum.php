@@ -54,15 +54,17 @@ abstract class Enum implements EnumInterface, \JsonSerializable
 
     final public static function from($value)
     {
-        $classname = static::class;
-        $cases = self::toArray();
+        if (!is_int($value) && !is_string($value)) {
+            throw ValueError::forInvalidDataType($value);
+        }
 
-        $case = array_search($value, $cases, false);
+        $cases = self::toArray();
+        $case  = array_search($value, $cases, false);
 
         // In native enum cases backed by integers can be instantiated from the
         // numeric strings and the opposite, for example (1 => '1' / '1' => 1).
         if (false === $case || (string) $cases[$case] != (string) $value) {
-            throw ValueError::for($classname, $value);
+            throw ValueError::forInvalidCase(static::class, $value);
         }
 
         return self::create($case, $value);
@@ -109,19 +111,19 @@ abstract class Enum implements EnumInterface, \JsonSerializable
      */
     private static function toArray(): array
     {
-        $cacheKey  = self::createCacheKey(static::class);
+        $key  = self::createCacheKey(static::class);
 
-        if (isset(self::$constants[$cacheKey])) {
-            return self::$constants[$cacheKey];
+        if (isset(self::$constants[$key])) {
+            return self::$constants[$key];
         }
 
         $constants = EnumParser::parse(static::class);
 
-        return self::$constants[$cacheKey] = $constants;
+        return self::$constants[$key] = $constants;
     }
 
     /**
-     * Create hash for caching purposes. 
+     * Create hash for caching purposes.
      *
      * @param string $key
      * @return string
@@ -146,7 +148,7 @@ abstract class Enum implements EnumInterface, \JsonSerializable
                 return $this->value;
         }
 
-        trigger_error("Undefined property: $$name", E_USER_WARNING);
+        throw new \ErrorException("Undefined property: $$name");
     }
 
     /**
@@ -154,14 +156,14 @@ abstract class Enum implements EnumInterface, \JsonSerializable
      *
      * @param string $_name
      * @param string $_value
-     * 
+     *
      * @return void
      *
      * @psalm-api
      */
     final public function __set($_name, $_value): void
     {
-        throw new \Error("Dynamic properties are not allowed on enums.");
+        throw new \ErrorException("Dynamic properties are not allowed on enums.");
     }
 
     /**

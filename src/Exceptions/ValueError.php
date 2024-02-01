@@ -13,10 +13,21 @@ class ValueError extends Error
      *
      * @return self
      */
-    public static function for(string $classname, $value)
+    public static function forInvalidCase(string $classname, $value)
     {
         $classname = (new ReflectionClass($classname))->getShortName();
         $message = sprintf('"%s" is not a valid backing value for enum "%s"', $value, $classname);
+
+        return new ValueError($message);
+    }
+
+    /**
+     * @param mixed $value
+     * @return self
+     */
+    public static function forInvalidDataType($value)
+    {
+        $message = sprintf('Value must be either integer or string, "%s" given', gettype($value));
 
         return new ValueError($message);
     }

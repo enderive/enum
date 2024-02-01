@@ -9,11 +9,10 @@ interface EnumInterface
     /**
      * Create enum from value.
      *
-     * @param string|int $value
-     * @return static
-     *
+     * @param mixed $value
      * @throws ValueError
      *
+     * @return static
      * @psalm-api
      */
     public static function from($value);
@@ -22,8 +21,8 @@ interface EnumInterface
      * Create enum instance without throwing an exception on invalid value.
      *
      * @param string|int $value
-     * @return static|null
      *
+     * @return static|null
      * @psalm-api
      */
     public static function tryFrom($value);
@@ -32,7 +31,6 @@ interface EnumInterface
      * Get the list of all the possible cases for current enum class.
      *
      * @return array<static>
-     *
      * @psalm-api
      */
     public static function cases(): array;
