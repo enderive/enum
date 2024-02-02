@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Enderive\Enum;
 
 use Enderive\Enum\Exceptions\ValueError;
+use ErrorException;
+use InvalidArgumentException;
+use JsonSerializable;
 
 /**
  * Simple enum implementation for php < 8.1.
@@ -12,7 +15,7 @@ use Enderive\Enum\Exceptions\ValueError;
  * @author Enderive <matthias.sz@outlook.com>
  * @psalm-consistent-constructor
  */
-abstract class Enum implements EnumInterface, \JsonSerializable
+abstract class Enum implements EnumInterface, JsonSerializable
 {
     /**
      * Enum case name.
@@ -148,7 +151,7 @@ abstract class Enum implements EnumInterface, \JsonSerializable
                 return $this->value;
         }
 
-        throw new \ErrorException("Undefined property: $$name");
+        throw new ErrorException("Undefined property: $$name");
     }
 
     /**
@@ -156,14 +159,14 @@ abstract class Enum implements EnumInterface, \JsonSerializable
      *
      * @param string $_name
      * @param string $_value
-     *
+     * @throws ErrorException
      * @return void
      *
      * @psalm-api
      */
     final public function __set($_name, $_value): void
     {
-        throw new \ErrorException("Dynamic properties are not allowed on enums.");
+        throw new ErrorException("Dynamic properties are not allowed on enums.");
     }
 
     /**
@@ -173,7 +176,7 @@ abstract class Enum implements EnumInterface, \JsonSerializable
      * @param array<mixed> $_arguments
      * @return static
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      *
      * @psalm-api
      */
@@ -182,7 +185,7 @@ abstract class Enum implements EnumInterface, \JsonSerializable
         $cases = self::toArray();
 
         if (false === array_key_exists($case, $cases)) {
-            throw new \InvalidArgumentException("Invalid enumeration value: $case");
+            throw new InvalidArgumentException("Invalid enumeration value: $case");
         }
 
         return self::create($case, $cases[$case]);
