@@ -100,7 +100,7 @@ abstract class Enum implements EnumInterface, JsonSerializable
      * @param int|string|null $value
      * @return static
      */
-    private static function create($case, $value = null): static
+    private static function create($case, $value = null)
     {
         $key = self::createCacheKey(static::class . $case);
 
