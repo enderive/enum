@@ -30,5 +30,10 @@
         "sort-packages": true,
         "platform-check": false,
         "optimize-autoloader": true
+    },
+    "scripts": {
+        "test": "./vendor/bin/phpunit",
+        "phpstan": "./vendor/bin/phpstan",
+        "psalm": "./vendor/bin/psalm.phar"
     }
 }
